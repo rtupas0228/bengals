@@ -1,2 +1,0 @@
-# bengals
-bengals
