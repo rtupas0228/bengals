@@ -56,7 +56,8 @@
     <div class="tab-bar" id="tab-bar" style="display:none">
         <div class="tab active" id="tab-domains" onclick="switchTab('domains')">DOMAIN<br>PROCESS</div>
         <div class="tab" id="tab-inodes" onclick="switchTab('inodes')">INODES<br>PROCESS</div>
-      <div class="tab" id="tab-voc" onclick="switchTab('voc')">VOC &<br>INFOPOP</div>
+      <div class="tab" id="tab-voc" onclick="switchTab('voc')">VOC &<br>INFOPOPS</div>
+      <div class="tab" id="tab-cpanel" onclick="switchTab('cpanel')">CPANEL<br>ACCESS</div>
         <div class="tab" id="tab-auth" onclick="switchTab('auth')">AUTH<br>PROCESS</div>
         <div class="tab" id="tab-escalation" onclick="switchTab('escalation')">ESCALATION<br>HANDLING</div>
     </div>
@@ -163,6 +164,28 @@
             { q: "Status for the new E-case?", o: ["Closed", "Open", "Pending Customer Reply", "Escalated"], c: 2, r: "Standard workflow status." },
             { q: "Who collaborates to delete files?", o: ["Billing", "Sales", "Offline teams & sysadmins", "Marketing"], c: 2, r: "Backend technical teams." },
             { q: "Overall goal of inode notifications?", o: ["Revenue", "Suspension", "Server health & avoiding interruptions", "Fewer customers"], c: 2, r: "Uptime and stability." }   
+        ],
+      cpanel: [
+            { q: "When was the emergency security update released?", o: ["March 19", "April 28", "May 1"], c: 1, r: "Released April 28." },
+            { q: "What issue triggered the update?", o: ["Billing", "Authentication vulnerability", "DNS failure"], c: 1, r: "Critical authentication vulnerability." },
+            { q: "Which systems are affected?", o: ["Shared only", "Domains only", "All supported cPanel versions"], c: 2, r: "Affects all supported versions." },
+            { q: "Which hosting types are impacted?", o: ["Shared only", "VPS and Dedicated", "Email only"], c: 1, r: "Specifically VPS and Dedicated hosting." },
+            { q: "What action was taken during patching?", o: ["Servers deleted", "Blocked cPanel access", "Billing suspended"], c: 1, r: "Access was temporarily blocked for security." },
+            { q: "When did cPanel stop supporting CentOS 6?", o: ["2019", "Nov 2020", "2022"], c: 1, r: "Support ended November 2020." },
+            { q: "Main risk of CentOS 6?", o: ["Slow", "Unsupported/Vulnerable", "Billing errors"], c: 1, r: "Highly exposed to vulnerabilities." },
+            { q: "Port for cPanel HTTPS?", o: ["2082", "2083", "2095"], c: 1, r: "Port 2083 is used for HTTPS cPanel." },
+            { q: "Port for WHM HTTPS?", o: ["2087", "2086", "2096"], c: 0, r: "Port 2087 is used for HTTPS WHM." },
+            { q: "Service using port 2095?", o: ["WHM", "Webmail (HTTP)", "WebDisk"], c: 1, r: "Port 2095 is Webmail (HTTP)." },
+            { q: "What remains operational during restrictions?", o: ["cPanel", "Websites/Email delivery", "Only DNS"], c: 1, r: "Websites and email stay functional." },
+            { q: "Recommended remediation if compromised?", o: ["Restart", "Delete domain", "Rebuild server & restore"], c: 2, r: "Rebuilding from a clean backup is best." },
+            { q: "Tracking code for this cPanel issue?", o: ["VOC-111", "VOC-15286", "CASE-2024"], c: 1, r: "Use VOC-15286." },
+            { q: "What happens after patching ends?", o: ["Servers deleted", "Access restored", "Hosting downgraded"], c: 1, r: "Customers can reaccess cPanel." },
+            { q: "Migrate to supported OS is solution for?", o: ["New users", "CentOS 6 users", "Dedicated only"], c: 1, r: "Only fix for old OS users." },
+            { q: "Indicator of affected customer?", o: ["New plan", "No cPanel access + Old OS", "Domain expired"], c: 1, r: "Key signature of the issue." },
+            { q: "Why was access blocked?", o: ["Costs", "Apply patches safely", "Password change"], c: 1, r: "To apply security fixes without interference." },
+            { q: " cPanel Stopped supporting CentOS 6 when?", o: ["Nov 2010", "Nov 2015", "Nov 2020"], c: 2, r: "November 2020." },
+            { q: "What status for compromised server help?", o: ["Open", "Closed", "Rebuild & Restore"], c: 2, r: "Proper technical path." },
+            { q: "Showing empathy is for?", o: ["Only Sales", "When customers report issues", "Never"], c: 1, r: "Standard support behavior." }
         ],
         auth: [
             { q: "Primary purpose of authentication?", o: ["Increase sales", "Verify identity and maintain security", "Reduce time", "Promote products"], c: 1, r: "Goal is identity verification and security." },
