@@ -3,144 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bengals Live Knowledge Hub</title>
+    <title>Bengals Command Center</title>
     <style>
-        :root {
-            --orange: #FB4F14;
-            --black: #000000;
-            --white: #ffffff;
-            --gray: #f4f4f4;
-            --correct: #27ae60;
-            --wrong: #e74c3c;
-        }
-
+        :root { --orange: #FB4F14; --black: #000000; --white: #ffffff; --gray: #f4f4f4; --correct: #27ae60; --wrong: #e74c3c; }
         body { font-family: 'Arial Black', sans-serif; background: var(--black); color: var(--white); margin: 0; display: flex; justify-content: center; min-height: 100vh; }
-        
-        #app { background: var(--white); color: var(--black); width: 95%; max-width: 600px; margin-top: 20px; border-radius: 20px; border: 4px solid var(--orange); overflow: hidden; display: flex; flex-direction: column; height: fit-content; margin-bottom: 20px; }
-
+        #app { background: var(--white); color: var(--black); width: 95%; max-width: 800px; margin-top: 20px; border-radius: 20px; border: 4px solid var(--orange); overflow: hidden; display: flex; flex-direction: column; height: fit-content; margin-bottom: 40px; }
         .tab-bar { display: flex; background: #222; border-bottom: 4px solid var(--orange); }
-        .tab { flex: 1; padding: 15px; text-align: center; color: white; cursor: pointer; font-size: 0.75rem; border-right: 1px solid #444; transition: 0.3s; }
+        .tab { flex: 1; padding: 15px 5px; text-align: center; color: white; cursor: pointer; font-size: 0.65rem; border-right: 1px solid #444; }
         .tab.active { background: var(--orange); font-weight: bold; }
-
         .content { padding: 25px; text-align: center; }
-
-        .choice-btn { 
-            display: block; width: 100%; padding: 15px; margin: 10px 0; 
-            background: var(--gray); color: black; border: 3px solid #ccc; 
-            border-radius: 12px; font-weight: bold; cursor: pointer; text-align: left; font-size: 1rem;
-        }
+        .choice-btn { display: block; width: 100%; padding: 16px; margin: 10px 0; background: var(--gray); color: black; border: 3px solid #ccc; border-radius: 12px; font-weight: bold; cursor: pointer; text-align: left; }
         .correct { background: var(--correct) !important; color: white !important; }
         .wrong { background: var(--wrong) !important; color: white !important; }
-
         .rationale { background: #fff3e0; padding: 15px; border-left: 6px solid var(--orange); margin: 15px 0; text-align: left; font-family: sans-serif; display: none; }
-        
-        #next-btn { background: var(--orange); color: white; width: 100%; padding: 20px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; display: none; }
-        
-        .leaderboard-table { background: #111; color: white; border-radius: 12px; padding: 10px; margin-top: 15px; font-family: sans-serif; }
-        .lb-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #333; }
-        .current-user { color: var(--orange); font-weight: bold; }
-        
-        input[type="text"] { width: 85%; padding: 15px; margin-bottom: 20px; border-radius: 8px; border: 2px solid #ccc; font-size: 1rem; }
+        .admin-btn { background: var(--orange); color: white; width: 100%; padding: 18px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        /* Admin Dashboard Styles */
+        .host-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; }
+        .feed-box { background: #111; color: #0f0; padding: 15px; border-radius: 10px; font-family: monospace; font-size: 0.8rem; height: 300px; overflow-y: auto; }
+        .rank-box { background: var(--gray); padding: 15px; border-radius: 10px; color: black; }
+        input { width: 85%; padding: 15px; margin-bottom: 10px; border-radius: 8px; border: 2px solid #ccc; font-size: 1rem; }
     </style>
 </head>
 <body>
 
 <div id="app">
     <div class="tab-bar" id="tab-bar" style="display:none">
-        <div class="tab active" id="tab-domains" onclick="switchTab('domains')">DOMAIN PROCESS</div>
-        <div class="tab" id="tab-voc" onclick="switchTab('voc')">VOC & INFO POPS</div>
+        <div class="tab active" id="tab-domains" onclick="switchTab('domains')">DOMAIN<br>PROCESS</div>
+        <div class="tab" id="tab-voc" onclick="switchTab('voc')">VOC &<br>INFO POPS</div>
+        <div class="tab" id="tab-auth" onclick="switchTab('auth')">AUTH<br>PROCESS</div>
     </div>
 
     <div class="content">
-        <!-- LOGIN -->
-        <div id="screen-login">
+        <!-- Landing Screen -->
+        <div id="screen-landing">
             <h1 style="color:var(--orange)">BENGALS ARENA</h1>
-            <p>Join the Live Session:</p>
-            <input type="text" id="username" placeholder="Enter Full Name">
-            <button onclick="startGame()" style="background:black; color:white; width:90%; padding:20px; border-radius:12px; cursor:pointer; font-weight:bold;">ENTER GAME</button>
+            <input type="text" id="username" placeholder="Participant Name">
+            <button class="admin-btn" onclick="startGame()">START QUIZ</button>
+            <p style="margin-top:20px; font-size:0.7rem; color:#666; cursor:pointer" onclick="showAdminLogin()">Host Access</p>
         </div>
 
-        <!-- QUIZ -->
+        <!-- Host Login -->
+        <div id="screen-admin-login" style="display:none">
+            <h2>HOST LOGIN</h2>
+            <input type="password" id="admin-pass" placeholder="Password">
+            <button class="admin-btn" onclick="verifyAdmin()">VIEW LIVE FEED</button>
+        </div>
+
+        <!-- HOST DASHBOARD -->
+        <div id="screen-host-dashboard" style="display:none">
+            <h2 style="color:var(--orange)">HOST COMMAND CENTER</h2>
+            <div class="host-grid">
+                <div>
+                    <h4>Live Answer Feed</h4>
+                    <div id="live-feed" class="feed-box">Waiting for activity...</div>
+                </div>
+                <div>
+                    <h4>Current Rankings</h4>
+                    <div id="admin-rank-list" class="rank-box">No participants yet.</div>
+                </div>
+            </div>
+            <button onclick="location.reload()" style="margin-top:20px">Close Session</button>
+        </div>
+
+        <!-- Quiz Screen -->
         <div id="screen-quiz" style="display:none">
-            <div id="q-meta" style="color: #888; font-size: 0.8rem; margin-bottom: 10px;"></div>
             <h2 id="q-text"></h2>
             <div id="choices-container"></div>
-            <div id="rationale-box" class="rationale">
-                <strong>RATIONALE:</strong> <span id="rationale-text"></span>
-            </div>
-            <button id="next-btn" onclick="fetchStandings()">SEE LIVE RANKINGS</button>
+            <div id="rationale-box" class="rationale"><strong>WHY?</strong> <span id="rationale-text"></span></div>
+            <button id="next-btn" class="admin-btn" onclick="showPlayerRank()">SEE MY RANK</button>
         </div>
 
-        <!-- LIVE RANKINGS -->
+        <!-- Participant Rank -->
         <div id="screen-rank" style="display:none">
-            <h2 style="color:var(--orange)">LIVE LEADERBOARD</h2>
-            <div id="leaderboard-list" class="leaderboard-table">Loading scores...</div>
-            <button onclick="nextQuestion()" style="background:black; color:white; width:100%; padding:20px; border-radius:12px; cursor:pointer; margin-top:20px; font-weight:bold;">NEXT QUESTION</button>
+            <h2 style="color:var(--orange)">LEADERBOARD</h2>
+            <div id="player-lb" style="background:#111; color:white; padding:15px; border-radius:10px;"></div>
+            <button class="admin-btn" onclick="nextQuestion()">NEXT QUESTION</button>
         </div>
     </div>
 </div>
 
 <script>
-    const DATABASE_URL = "https://script.google.com/macros/s/AKfycbxFpnBsz-FEghm6LavST02eOBPCOJnvjliLMTipkirYks7ZMofRZqBl4DOdydIztRd4/exec";
+    const DATABASE_URL = "YOUR_APPS_SCRIPT_URL_HERE"; 
+    const HOST_PASS = "BengalsHost";
 
     const allQuizzes = {
         domains: [
-            { q: "What is the most common reason for domain expiration?", o: ["Server failure", "Non-renewal before date", "DNS misconfig", "Hacking"], c: 1, r: "Most common cause is failure to manually renew." },
-            { q: "What can cause auto-renewal to fail?", o: ["Spelling", "Expired payment method", "Downtime", "Popularity"], c: 1, r: "Auto-renew fails if payment details are outdated or insufficient." },
-            { q: "What happens to your site immediately after expiration?", o: ["Loads slower", "Redirects", "Becomes inaccessible", "Stays active"], c: 2, r: "Website downtime occurs immediately." },
-            { q: "What will users see when visiting an expired domain?", o: ["Blank page", "404 Error", "Parked page", "Login page"], c: 2, r: "Visitors usually see a parked/expired notice page." },
-            { q: "What happens to email services after expiration?", o: ["Incoming only", "Outgoing only", "Stop completely", "Delayed"], c: 2, r: "Both sending and receiving emails are interrupted." },
+            { q: "Most common reason for domain expiration?", o: ["Server failure", "Non-renewal before date", "DNS misconfig", "Hacking"], c: 1, r: "Failure to manually renew is the most common cause." },
             { q: "How long is the typical grace period?", o: ["1-10 days", "1-45 days", "30-60 days", "60-90 days"], c: 1, r: "Grace period is typically 1-45 days." },
-            { q: "During grace period, how can you renew?", o: ["Penalty fee", "Standard price", "Only Support", "Not possible"], c: 1, r: "No additional fees during grace period." },
-            { q: "What happens if not renewed during grace period?", o: ["Deleted", "Redemption period", "Auto-renewed", "Free"], c: 1, r: "It enters the Redemption period." },
-            { q: "What is required to recover in Redemption?", o: ["Standard fee", "No fee", "Redemption fee + renewal", "Hosting"], c: 2, r: "Both fees are required for recovery." },
-            { q: "What is the stated Redemption fee?", o: ["$35.99", "$50.00", "$99.00", "$120.00"], c: 2, r: "The explicitly stated fee is $99.00." },
-            { q: "What is the reinstatement fee mentioned?", o: ["$20.00", "$35.99", "$99.00", "$150.00"], c: 1, r: "A $35.99 reinstatement fee is required." },
-            { q: "When can a domain be bought by a third party?", o: ["Immediately", "7 days before", "As early as 30 days after", "1 year"], c: 2, r: "Others can buy it as early as 30 days post-expiration." },
-            { q: "What happens after Redemption if not recovered?", o: ["Deleted", "Auctioned off", "Owner gets back", "Inactive"], c: 1, r: "The domain is auctioned off." },
-            { q: "What is one way to prevent domain expiration?", o: ["Disable auto-renew", "Ignore emails", "Keep billing updated", "Change name"], c: 2, r: "Keeping billing info updated prevents failure." },
-            { q: "When are renewal reminders sent?", o: ["After only", "60 days before", "30/7/5 days schedule", "Daily"], c: 2, r: "Sent 30 and 7 days before, and 5 days after." }
+            { q: "What is the stated Redemption fee?", o: ["$35.99", "$50.00", "$99.00", "$120.00"], c: 2, r: "The explicitly stated fee is $99.00." }
         ],
-        voc: [
-            { q: "As of April 28, how many customers have Agentic AI?", o: ["50%", "75%", "100%"], c: 2, r: "It is now live for 100% of customers." },
-            { q: "Where is the AI Drawer located?", o: ["Left side", "Top", "Right side"], c: 2, r: "Located on the right hand side of Account Manager." },
-            { q: "Which brand gets Apple Pay?", o: ["NetSol", "Web.com", "Register.com"], c: 0, r: "Specifically for the NetSol brand." },
-            { q: "April SSL Discount code?", o: ["SSL30", "SSL0FF30", "SAVE30"], c: 1, r: "Code is SSL0FF30 (using a zero)." },
-            { q: "If Agentic AI has issues, which VOC case do you use?", o: ["VOC-111", "VOC-15117", "VOC-HELP"], c: 1, r: "Please attach your case to VOC-15117." }
-        ]
+        voc: [{ q: "As of April 28, how many customers have Agentic AI?", o: ["50%", "75%", "100%"], c: 2, r: "It is now live for 100% of customers." }],
+        auth: [{ q: "Primary purpose of authentication?", o: ["Increase sales", "Verify identity & security", "Reduce time"], c: 1, r: "Security is the main goal." }]
     };
 
-    let currentTab = 'domains';
-    let currentIdx = 0;
-    let score = 0;
-    let userName = "";
+    let currentTab = 'domains'; let currentIdx = 0; let score = 0; let userName = "";
 
     function startGame() {
         userName = document.getElementById('username').value;
-        if(!userName) return alert("Enter Name!");
-        document.getElementById('screen-login').style.display = 'none';
-        document.getElementById('tab-bar').style.display = 'flex';
-        document.getElementById('screen-quiz').style.display = 'block';
+        if(!userName) return alert("Enter Name");
+        document.getElementById('screen-landing').style.display='none';
+        document.getElementById('tab-bar').style.display='flex';
+        document.getElementById('screen-quiz').style.display='block';
         loadQuestion();
     }
 
-    function switchTab(tabName) {
-        currentTab = tabName;
-        currentIdx = 0;
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById('tab-'+tabName).classList.add('active');
-        document.getElementById('screen-rank').style.display = 'none';
-        document.getElementById('screen-quiz').style.display = 'block';
-        loadQuestion();
+    function showAdminLogin() {
+        document.getElementById('screen-landing').style.display='none';
+        document.getElementById('screen-admin-login').style.display='block';
+    }
+
+    function verifyAdmin() {
+        if(document.getElementById('admin-pass').value === HOST_PASS) {
+            document.getElementById('screen-admin-login').style.display='none';
+            document.getElementById('screen-host-dashboard').style.display='block';
+            setInterval(updateHostView, 3000);
+        }
+    }
+
+    function updateHostView() {
+        fetch(DATABASE_URL).then(res => res.json()).then(data => {
+            let rankHtml = ""; let feedHtml = "";
+            data.forEach((row, i) => {
+                rankHtml += `<div style="font-size:0.8rem">${i+1}. ${row.name} - <b>${row.score} pts</b></div>`;
+                feedHtml += `<div>[${new Date().toLocaleTimeString()}] ${row.name}: ${row.lastAction}</div>`;
+            });
+            document.getElementById('admin-rank-list').innerHTML = rankHtml;
+            document.getElementById('live-feed').innerHTML = feedHtml + document.getElementById('live-feed').innerHTML;
+        });
     }
 
     function loadQuestion() {
         const data = allQuizzes[currentTab][currentIdx];
-        document.getElementById('q-meta').innerText = `${currentTab.toUpperCase()} | Question ${currentIdx + 1} of ${allQuizzes[currentTab].length}`;
         document.getElementById('q-text').innerText = data.q;
-        document.getElementById('rationale-box').style.display = 'none';
-        document.getElementById('next-btn').style.display = 'none';
-        
+        document.getElementById('rationale-box').style.display='none';
+        document.getElementById('next-btn').style.display='none';
         const container = document.getElementById('choices-container');
         container.innerHTML = '';
         data.o.forEach((opt, i) => {
@@ -154,63 +150,44 @@
 
     function selectChoice(idx) {
         const data = allQuizzes[currentTab][currentIdx];
+        const isCorrect = (idx === data.c);
         const btns = document.querySelectorAll('.choice-btn');
         btns.forEach(b => b.disabled = true);
-
-        if(idx === data.c) {
-            btns[idx].classList.add('correct');
-            score += 100;
-        } else {
-            btns[idx].classList.add('wrong');
-            btns[data.c].classList.add('correct');
-        }
-
+        if(isCorrect) { btns[idx].classList.add('correct'); score += 100; }
+        else { btns[idx].classList.add('wrong'); btns[data.c].classList.add('correct'); }
         document.getElementById('rationale-text').innerText = data.r;
-        document.getElementById('rationale-box').style.display = 'block';
-        document.getElementById('next-btn').style.display = 'block';
+        document.getElementById('rationale-box').style.display='block';
+        document.getElementById('next-btn').style.display='block';
 
-        // SEND SCORE TO YOUR GOOGLE SHEET
         fetch(DATABASE_URL, {
             method: 'POST',
-            mode: 'no-cors', // Essential for Apps Script
-            cache: 'no-cache',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: userName, score: score })
+            mode: 'no-cors',
+            body: JSON.stringify({ name: userName, score: score, qNum: (currentIdx+1), isCorrect: isCorrect })
         });
     }
 
-    function fetchStandings() {
-        document.getElementById('screen-quiz').style.display = 'none';
-        document.getElementById('screen-rank').style.display = 'block';
-        document.getElementById('leaderboard-list').innerHTML = "Fetching latest rankings...";
-
-        fetch(DATABASE_URL)
-            .then(res => res.json())
-            .then(data => {
-                let html = "";
-                data.forEach((row, i) => {
-                    html += `<div class="lb-row ${row.name === userName ? 'current-user' : ''}">
-                                <span>${i+1}. ${row.name}</span>
-                                <span>${row.score} pts</span>
-                             </div>`;
-                });
-                document.getElementById('leaderboard-list').innerHTML = html || "No scores yet!";
-            })
-            .catch(() => {
-                document.getElementById('leaderboard-list').innerHTML = "Syncing with Google Sheets...";
+    function showPlayerRank() {
+        document.getElementById('screen-quiz').style.display='none';
+        document.getElementById('screen-rank').style.display='block';
+        fetch(DATABASE_URL).then(res => res.json()).then(data => {
+            let html = "";
+            data.slice(0, 5).forEach((row, i) => {
+                html += `<div style="display:flex; justify-content:space-between; padding:5px; ${row.name === userName ? 'color:var(--orange)' : ''}"><span>${i+1}. ${row.name}</span><span>${row.score}</span></div>`;
             });
+            document.getElementById('player-lb').innerHTML = html;
+        });
     }
 
     function nextQuestion() {
         currentIdx++;
         if(currentIdx < allQuizzes[currentTab].length) {
-            document.getElementById('screen-rank').style.display = 'none';
-            document.getElementById('screen-quiz').style.display = 'block';
+            document.getElementById('screen-rank').style.display='none';
+            document.getElementById('screen-quiz').style.display='block';
             loadQuestion();
-        } else {
-            alert("Tab Complete! Switch tabs or check the Google Sheet for final standings.");
-        }
+        } else { alert("Section complete!"); }
     }
+
+    function switchTab(t) { currentTab = t; currentIdx = 0; score = 0; startGame(); }
 </script>
 </body>
 </html>
