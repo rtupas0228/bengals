@@ -55,7 +55,7 @@
 
     <div class="tab-bar" id="tab-bar" style="display:none">
         <div class="tab active" id="tab-domains" onclick="switchTab('domains')">DOMAIN<br>PROCESS</div>
-        <div class="tab" id="tab-voc" onclick="switchTab('voc')">VOC &<br>INFO POPS</div>
+        <div class="tab" id="tab-inodes" onclick="switchTab('inodes')">INODES<br>PROCESS</div>
         <div class="tab" id="tab-auth" onclick="switchTab('auth')">AUTH<br>PROCESS</div>
         <div class="tab" id="tab-escalation" onclick="switchTab('escalation')">ESCALATION<br>HANDLING</div>
     </div>
@@ -119,12 +119,37 @@
             { q: "What is one way to prevent domain expiration?", o: ["Disable auto-renew", "Ignore emails", "Keep billing updated", "Change name frequently"], c: 2, r: "Keeping billing info updated prevents failure." },
             { q: "When are renewal reminders typically sent?", o: ["After expiration", "60 days before", "30/7/5 days schedule", "Every day"], c: 2, r: "Sent 30 and 7 days before, and 5 days after." }
         ],
-        voc: [
-            { q: "As of April 28, how many have Agentic AI?", o: ["50%", "75%", "100%"], c: 2, r: "100% on April 28." },
-            { q: "AI Drawer location?", o: ["Left", "Top", "Right side"], c: 2, r: "Located on the right hand side." },
-            { q: "Which brand gets Apple Pay?", o: ["NetSol", "Web.com", "Register.com"], c: 0, r: "Specifically for NetSol." },
-            { q: "April SSL Discount code?", o: ["SSL30", "SSL0FF30", "SAVE30"], c: 1, r: "Code is SSL0FF30 (zero)." },
-            { q: "Agentic AI issues case ID?", o: ["VOC-111", "VOC-15117", "VOC-HELP"], c: 1, r: "Use VOC-15117." }
+        inodes: [
+            { q: "What does an inode represent?", o: ["Website traffic", "File storage size", "Individual files and directories", "Server uptime"], c: 2, r: "Inodes count each individual file and folder." },
+            { q: "High inode usage indicates:", o: ["Large file sizes", "Many files and folders", "High bandwidth", "High CPU usage"], c: 1, r: "High inode = high file count." },
+            { q: "Why is high inode usage a concern?", o: ["Increases speed", "Improves backups", "Degrades server performance", "Increases bandwidth"], c: 2, r: "Degrades performance and affects backups." },
+            { q: "What system is affected by excessive usage?", o: ["DNS system", "File system", "Billing system", "Email routing"], c: 1, r: "Inodes relate to the file structure." },
+            { q: "High inode counts mainly impact:", o: ["Domain registration", "Server performance and backups", "Email marketing", "SSL certificates"], c: 1, r: "Performance and backups are most affected." },
+            { q: "How are customers notified?", o: ["Phone calls", "Emails and system popups", "SMS alerts", "Billing invoices"], c: 1, r: "Primary methods are emails and system alerts." },
+            { q: "The purpose of inode notifications is to:", o: ["Force upgrades", "Suspend accounts", "Encourage cleanup", "Cancel services"], c: 2, r: "Proactive maintenance." },
+            { q: "Inode alerts are considered:", o: ["Suspension notices", "Advisory warnings", "Billing reminders", "Security threats"], c: 1, r: "Advisory/informational, not critical." },
+            { q: "When customers receive inode alerts, agents should:", o: ["Ignore the alert", "Close the case", "Review the ACOM case in Pega", "Upgrade the plan"], c: 2, r: "First step is reviewing the specific case." },
+            { q: "Are sites suspended for high inode usage?", o: ["Yes", "Sometimes", "No, it is not suspended"], c: 2, r: "Alerts are informational warnings." },
+            { q: "What should agents emphasize about alerts?", o: ["Mandatory upgrades", "Performance optimization notices", "Penalties", "Billing issues"], c: 1, r: "Framed as optimization for server health." },
+            { q: "Agents should guide customers toward:", o: ["Purchasing upgrades", "Ignoring the issue", "Actionable cleanup solutions", "Cancelling hosting"], c: 2, r: "Practical solutions like deleting files." },
+            { q: "What should agents NOT claim about inode limits?", o: ["They can be increased", "They are fixed", "They ensure fair usage", "They affect performance"], c: 0, r: "Limits cannot be increased." },
+            { q: "Why can inode limits NOT be increased?", o: ["Technical limitations", "Billing restrictions", "Fair resource allocation", "Lack of support"], c: 2, r: "Ensures shared server stability." },
+            { q: "What must agents do before assisting?", o: ["Upgrade plan", "Review ACOM case", "Contact billing", "Reset account"], c: 1, r: "ACOM case contains the usage data." },
+            { q: "Recommended solution for high inode usage?", o: ["Increase bandwidth", "Delete unused files", "Change domain", "Disable hosting"], c: 1, r: "Reducing file count is the only fix." },
+            { q: "What type of files should be removed?", o: ["Active system files", "Old emails and unused plugins", "SSL certificates", "DNS records"], c: 1, r: "Targets common 'junk' files." },
+            { q: "What is an alternative to deleting data?", o: ["Duplicate files", "Archive to cloud storage", "Rename files", "Compress images"], c: 1, r: "Offloading files to external storage." },
+            { q: "What is a cron job used for?", o: ["Sending emails", "Clearing temporary files automatically", "Backups only", "Domain renewal"], c: 1, r: "Automates regular cleanup tasks." },
+            { q: "Manual cleanup helps to:", o: ["Increase count", "Reduce inode usage", "Increase bandwidth", "Change plan"], c: 1, r: "Directly lowers the inode count." },
+            { q: "What inode count triggers special protocol?", o: ["100,000", "200,000", "300,000", "500,000"], c: 2, r: "300k is the threshold for specialized handling." },
+            { q: "Why deletion done offline at high levels?", o: ["Security", "FTP timeout issues", "Billing", "DNS errors"], c: 1, r: "High file counts crash FTP sessions." },
+            { q: "Required before agent deleting files?", o: ["Verbal approval", "Written consent via email", "Manager approval", "System confirmation"], c: 1, r: "Email confirmation is legally required." },
+            { q: "Agents must inform customers that deletions are:", o: ["Restorable", "Temporary", "Permanent and irreversible", "Archived automatically"], c: 2, r: "Crucial disclaimer." },
+            { q: "ACOM cases close automatically after:", o: ["24 hours", "7 days", "14 days", "30 days"], c: 2, r: "Standard closure timeline." },
+            { q: "If action needed after ACOM case closure:", o: ["Reopen it", "Ignore", "Create new offline E-case", "Manual call"], c: 2, r: "New E-case is required for offline teams." },
+            { q: "What must be in the new E-case?", o: ["Billing", "Original email content", "Password", "Domain info"], c: 1, r: "Includes the customer's written consent." },
+            { q: "Status for the new E-case?", o: ["Closed", "Open", "Pending Customer Reply", "Escalated"], c: 2, r: "Standard workflow status." },
+            { q: "Who collaborates to delete files?", o: ["Billing", "Sales", "Offline teams & sysadmins", "Marketing"], c: 2, r: "Backend technical teams." },
+            { q: "Overall goal of inode notifications?", o: ["Revenue", "Suspension", "Server health & avoiding interruptions", "Fewer customers"], c: 2, r: "Uptime and stability." }   
         ],
         auth: [
             { q: "Primary purpose of authentication?", o: ["Increase sales", "Verify identity and maintain security", "Reduce time", "Promote products"], c: 1, r: "Goal is identity verification and security." },
