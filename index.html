@@ -3,54 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bengals Knowledge Hub</title>
+    <title>Bengals Master Hub</title>
     <style>
         :root { --orange: #FB4F14; --black: #000000; --white: #ffffff; --gray: #f4f4f4; --correct: #27ae60; --wrong: #e74c3c; }
-        
         body { font-family: 'Arial Black', sans-serif; background: var(--black); color: var(--white); margin: 0; display: flex; justify-content: center; min-height: 100vh; }
         
         #app { background: var(--white); color: var(--black); width: 98%; max-width: 900px; margin-top: 10px; border-radius: 20px; border: 4px solid var(--orange); overflow: hidden; display: flex; flex-direction: column; margin-bottom: 40px; position: relative; }
 
         /* MUSIC CONTROL */
-        #music-control { position: absolute; top: 75px; right: 15px; background: rgba(0,0,0,0.8); color: white; border: none; padding: 10px; border-radius: 50%; cursor: pointer; z-index: 1000; display: none; width: 45px; height: 45px; font-size: 1.2rem; }
+        #music-control { position: absolute; top: 85px; right: 15px; background: rgba(0,0,0,0.8); color: white; border: none; padding: 10px; border-radius: 50%; cursor: pointer; z-index: 1000; display: none; width: 45px; height: 45px; font-size: 1.2rem; }
 
-        /* TAB BAR */
-        .tab-bar { display: flex; background: #111; border-bottom: 4px solid var(--orange); }
-        .tab { flex: 1; padding: 15px 2px; text-align: center; color: white; cursor: pointer; font-size: 0.65rem; border-right: 1px solid #333; line-height: 1.2; display: flex; align-items: center; justify-content: center; }
+        /* TABS */
+        .tab-bar { display: flex; flex-wrap: wrap; background: #111; border-bottom: 4px solid var(--orange); }
+        .tab { flex: 1; min-width: 25%; padding: 15px 5px; text-align: center; color: white; cursor: pointer; font-size: 0.65rem; border-right: 1px solid #333; line-height: 1.2; display: flex; align-items: center; justify-content: center; }
         .tab.active { background: var(--orange); font-weight: bold; }
 
         .content { padding: 20px; text-align: center; }
 
-        /* BUTTONS */
-        .choice-btn { display: block; width: 100%; padding: 16px; margin: 10px 0; background: var(--gray); color: black; border: 3px solid #ccc; border-radius: 12px; font-weight: bold; cursor: pointer; text-align: left; font-size: 1rem; box-sizing: border-box; }
-        .correct { background: var(--correct) !important; color: white !important; border-color: #1e8449 !important; }
-        .wrong { background: var(--wrong) !important; color: white !important; border-color: #922b21 !important; }
+        /* CHOICES */
+        .choice-btn { 
+            display: block; width: 100%; padding: 16px; margin: 10px 0; 
+            background: #eeeeee; color: #000000 !important; border: 3px solid #cccccc; 
+            border-radius: 12px; font-weight: bold; cursor: pointer; text-align: left; font-size: 0.95rem; 
+        }
+        .correct { background: var(--correct) !important; color: white !important; }
+        .wrong { background: var(--wrong) !important; color: white !important; }
         
-        .rationale { background: #fff3e0; padding: 15px; border-left: 6px solid var(--orange); margin: 15px 0; text-align: left; font-family: sans-serif; display: none; font-size: 0.95rem; }
+        .rationale { background: #fff3e0; padding: 15px; border-left: 6px solid var(--orange); margin: 15px 0; text-align: left; font-family: sans-serif; display: none; font-size: 0.95rem; color: #333; }
         
         .action-btn { background: var(--orange); color: white; width: 100%; padding: 20px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 10px; }
 
-        /* HOST DASHBOARD GRID */
+        /* HOST DASHBOARD */
         .host-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; margin-top: 20px; }
         .feed-box { background: #000; color: #00ff00; padding: 15px; border-radius: 10px; font-family: monospace; font-size: 0.75rem; height: 400px; overflow-y: auto; text-align: left; border: 2px solid #333; }
         .rank-box { background: var(--gray); padding: 15px; border-radius: 10px; border: 1px solid #ccc; height: 400px; overflow-y: auto; color: black; }
 
         input { width: 85%; padding: 15px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; }
 
-        /* MOBILE RESPONSIVENESS */
         @media (max-width: 600px) {
             .host-grid { grid-template-columns: 1fr; }
-            .tab { font-size: 0.55rem; }
-            #app { margin-top: 0; border-radius: 0; border-width: 2px; }
-            .content { padding: 15px; }
+            .tab { font-size: 0.55rem; min-width: 50%; border-bottom: 1px solid #333; }
         }
     </style>
 </head>
 <body>
 
-<audio id="bg-music" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3" type="audio/mpeg">
-</audio>
+<audio id="bg-music" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3" type="audio/mpeg"></audio>
 
 <div id="app">
     <button id="music-control" onclick="toggleMusic()">🔊</button>
@@ -58,190 +56,209 @@
     <div class="tab-bar" id="tab-bar" style="display:none">
         <div class="tab active" id="tab-domains" onclick="switchTab('domains')">DOMAIN<br>PROCESS</div>
         <div class="tab" id="tab-voc" onclick="switchTab('voc')">VOC &<br>INFO POPS</div>
-        <div class="tab" id="tab-auth" onclick="switchTab('auth')">AUTHENTICATION<br>PROCESS</div>
+        <div class="tab" id="tab-auth" onclick="switchTab('auth')">AUTH<br>PROCESS</div>
+        <div class="tab" id="tab-escalation" onclick="switchTab('escalation')">ESCALATION<br>HANDLING</div>
     </div>
 
     <div class="content">
-        <!-- Entry Screen -->
         <div id="screen-entry">
-            <h1 style="color:var(--orange); font-size: 2rem;">BENGALS ARENA</h1>
-            <div style="border:1px solid #eee; padding:20px; border-radius:15px; background:#fafafa;">
-                <h3 style="margin-top:0">Participant Join</h3>
-                <input type="text" id="username" placeholder="Full Name">
-                <button class="action-btn" onclick="startQuiz()">START QUIZ</button>
-            </div>
-            <p style="margin-top:40px; font-size:0.7rem; color:#888; cursor:pointer" onclick="showHostLogin()">[ Host / Manager Access ]</p>
+            <h1 style="color:var(--orange)">BENGALS ARENA</h1>
+            <input type="text" id="username" placeholder="Participant Name">
+            <button class="action-btn" onclick="startSession()">START SESSION</button>
+            <p style="margin-top:40px; font-size:0.7rem; color:#888; cursor:pointer" onclick="showHostLogin()">[ Host Access ]</p>
         </div>
 
-        <!-- Host Login -->
         <div id="screen-host-login" style="display:none">
             <h2>HOST LOGIN</h2>
             <input type="password" id="h-pass" placeholder="Password">
-            <button class="action-btn" onclick="loginHost()">ACCESS COMMAND CENTER</button>
-            <button onclick="location.reload()" style="background:none; border:none; color:blue; margin-top:10px; cursor:pointer;">Back</button>
+            <button class="action-btn" onclick="loginHost()">LOGIN</button>
         </div>
 
-        <!-- HOST DASHBOARD -->
         <div id="screen-host-dash" style="display:none">
-            <h2 style="color:var(--orange); margin:0;">COMMAND CENTER</h2>
+            <h2 style="color:var(--orange)">COMMAND CENTER</h2>
             <div class="host-grid">
-                <div>
-                    <h4 style="margin:5px; text-align:left;">Live Answer Feed</h4>
-                    <div id="host-feed" class="feed-box">Waiting for activity...</div>
-                </div>
-                <div>
-                    <h4 style="margin:5px; text-align:left;">Rankings</h4>
-                    <div id="host-ranks" class="rank-box"></div>
-                </div>
+                <div><h4>Live Feed</h4><div id="host-feed" class="feed-box"></div></div>
+                <div><h4>Rankings</h4><div id="host-ranks" class="rank-box"></div></div>
             </div>
-            <button onclick="resetDatabase()" style="background:#666; color:white; border:none; padding:10px; border-radius:5px; margin-top:10px; cursor:pointer;">WIPE DAILY DATA</button>
-            <button onclick="location.reload()" style="margin-left:10px">Logout</button>
+            <button onclick="resetDatabase()" style="background:#666; color:white; border:none; padding:10px; border-radius:5px; margin-top:10px; cursor:pointer;">WIPE DATA</button>
+            <button onclick="location.reload()">Logout</button>
         </div>
 
-        <!-- Quiz Screen -->
         <div id="screen-quiz" style="display:none">
-            <div id="q-meta" style="color:#888; font-size:0.7rem; margin-bottom:10px; text-align:left"></div>
-            <h2 id="q-text" style="font-size:1.15rem; margin-bottom:20px;"></h2>
-            <div id="choices-box"></div>
-            <div id="rationale-box" class="rationale"><strong>RATIONALE:</strong> <span id="r-text"></span></div>
-            <button id="next-btn" class="action-btn" onclick="showPlayerLB()">CHECK MY RANK</button>
+            <div id="q-meta" style="color:#888; font-size:0.75rem; text-align:left;"></div>
+            <h2 id="q-text" style="font-size:1.1rem;"></h2>
+            <div id="choices-container"></div>
+            <div id="rationale-box" class="rationale"><strong>RATIONALE:</strong> <span id="rationale-text"></span></div>
+            <button id="next-btn" class="action-btn" onclick="showLeaderboard()">CHECK SCORE</button>
         </div>
 
-        <!-- Player Leaderboard -->
-        <div id="screen-player-lb" style="display:none">
-            <h2 style="color:var(--orange)">TOP 5 STANDINGS</h2>
-            <div id="lb-list" style="background:#111; color:white; padding:15px; border-radius:10px; text-align:left; font-family:sans-serif;"></div>
-            <button class="action-btn" style="background:black" onclick="nextQuestion()">NEXT QUESTION</button>
+        <div id="screen-rank" style="display:none">
+            <h2 style="color:var(--orange)">LEADERBOARD</h2>
+            <div id="lb-list" style="background:#111; color:white; padding:15px; border-radius:10px; text-align:left;"></div>
+            <button class="action-btn" style="background:black" onclick="nextQuestion()">CONTINUE</button>
         </div>
     </div>
 </div>
 
 <script>
-    // PASTE YOUR URL HERE
-    const DATABASE_URL = "https://script.google.com/macros/s/AKfycbxWp_DUQbQLigctU3cXXl-ylznr5sVVv7sTYvY8S4Y3TjV3KVvx9GjjGCStCTMdLVaTJg/exec"; 
-    const HOST_KEY = "BengalsHost";
-    const audio = document.getElementById('bg-music');
-
     const allQuizzes = {
         domains: [
-            { q: "What is the most common reason for domain expiration?", o: ["Server failure", "Non-renewal before expiration", "DNS misconfig", "Hacking"], c: 1, r: "Failure to manually renew is the most common cause mentioned." },
-            { q: "What can cause auto-renewal to fail?", o: ["Spelling", "Expired payment method", "Downtime", "Popularity"], c: 1, r: "Auto-renew fails if payment details are outdated or insufficient." },
-            { q: "What happens to your site immediately after expiration?", o: ["Loads slower", "Redirects", "Becomes inaccessible", "Stays active"], c: 2, r: "Website downtime occurs immediately." },
-            { q: "What will users see when visiting an expired domain?", o: ["Blank page", "404 Error", "Parked page", "Login page"], c: 2, r: "Visitors usually see a parked/expired notice page." },
-            { q: "What happens to email services after expiration?", o: ["Incoming only", "Outgoing only", "Stop completely", "Delayed"], c: 2, r: "Both sending and receiving emails are interrupted." },
-            { q: "How long is the typical grace period?", o: ["1-10 days", "1-45 days", "30-60 days", "60-90 days"], c: 1, r: "Grace period is typically 1-45 days." },
-            { q: "During grace period, how can you renew?", o: ["Penalty fee", "Standard price", "Only Support", "Not possible"], c: 1, r: "No additional fees during grace period." },
-            { q: "What happens if not renewed during grace period?", o: ["Deleted", "Redemption period", "Auto-renewed", "Free"], c: 1, r: "It enters the Redemption period." },
-            { q: "What is required to recover in Redemption?", o: ["Standard fee", "No fee", "Redemption fee + renewal", "Hosting"], c: 2, r: "Both fees are required for recovery." },
-            { q: "What is the stated Redemption fee?", o: ["$35.99", "$50.00", "$99.00", "$120.00"], c: 2, r: "The explicitly stated fee is $99.00." },
+            { q: "Most common reason for domain expiration?", o: ["Server failure", "Non-renewal before expiration", "DNS misconfig", "Hacking"], c: 1, r: "Non-renewal is the primary cause mentioned." },
+            { q: "What can cause auto-renewal to fail?", o: ["Spelling", "Expired payment method", "Downtime", "Popularity"], c: 1, r: "Auto-renew fails if payment details are outdated." },
+            { q: "What happens to your website immediately after domain expiration?", o: ["It loads slower", "It redirects", "It becomes inaccessible", "It remains active"], c: 2, r: "Website downtime occurs immediately." },
+            { q: "What will users see when visiting an expired domain?", o: ["Blank page", "Error 404", "Parked page", "Login page"], c: 2, r: "Visitors usually see a parked/expired notice page." },
+            { q: "What happens to email services after domain expiration?", o: ["Incoming only", "Outgoing only", "Emails stop completely", "Delayed"], c: 2, r: "Both sending and receiving emails are interrupted." },
+            { q: "How long is the typical grace period?", o: ["1–10 days", "1–45 days", "30–60 days", "60–90 days"], c: 1, r: "Grace period is typically 1-45 days." },
+            { q: "During grace period, how can you renew your domain?", o: ["With a penalty fee", "At standard price", "Only via Support", "Not possible"], c: 1, r: "No additional fees during grace period." },
+            { q: "If not renewed during grace period?", o: ["Deleted", "It enters Redemption", "Auto-renewed", "Free"], c: 1, r: "This is the next lifecycle phase." },
+            { q: "What is required to recover a domain during Redemption?", o: ["Standard fee only", "No fee", "Redemption fee + renewal", "Hosting payment"], c: 2, r: "Both fees are required for recovery." },
+            { q: "What is the stated Redemption fee?", o: ["$35.99", "$50.00", "$99.00", "$120.00"], c: 2, r: "Explicitly stated as $99.00." },
             { q: "What is the reinstatement fee mentioned?", o: ["$20.00", "$35.99", "$99.00", "$150.00"], c: 1, r: "A $35.99 reinstatement fee is required." },
-            { q: "When can a domain be bought by a third party?", o: ["Immediately", "7 days before", "As early as 30 days after", "1 year"], c: 2, r: "Others can buy it as early as 30 days post-expiration." },
-            { q: "What happens after Redemption if not recovered?", o: ["Deleted", "Auctioned off", "Owner gets back", "Inactive"], c: 1, r: "The domain is auctioned off." },
-            { q: "What is one way to prevent domain expiration?", o: ["Disable auto-renew", "Ignore emails", "Keep billing updated", "Change name"], c: 2, r: "Keeping billing info updated prevents failure." },
-            { q: "When are renewal reminders sent?", o: ["After only", "60 days before", "30/7/5 days schedule", "Daily"], c: 2, r: "Sent 30 and 7 days before, and 5 days after." }
+            { q: "When can a domain be bought by a third party?", o: ["Immediately", "7 days before", "As early as 30 days after", "After 1 year"], c: 2, r: "Available as early as 30 days post-expiration." },
+            { q: "What happens after Redemption if not recovered?", o: ["Permanently deleted", "It is auctioned off", "Owner gets back", "Inactive forever"], c: 1, r: "Auction occurs after Redemption period." },
+            { q: "What is one way to prevent domain expiration?", o: ["Disable auto-renew", "Ignore emails", "Keep billing updated", "Change name frequently"], c: 2, r: "Keeping billing info updated prevents failure." },
+            { q: "When are renewal reminders typically sent?", o: ["After expiration", "60 days before", "30/7/5 days schedule", "Every day"], c: 2, r: "Sent 30 and 7 days before, and 5 days after." }
         ],
         voc: [
-            { q: "As of April 28, what % of customers have Agentic AI?", o: ["50%", "75%", "100%"], c: 2, r: "It reached 100% of customers on April 28." },
-            { q: "Where is the AI Drawer located?", o: ["Left side", "Top", "Right side"], c: 2, r: "Located on the right hand side of Account Manager." },
-            { q: "Which brand gets Apple Pay?", o: ["NetSol", "Web.com", "Register.com"], c: 0, r: "Specifically for the NetSol brand." },
-            { q: "April SSL Discount code?", o: ["SSL30", "SSL0FF30", "SECURE"], c: 1, r: "Code is SSL0FF30 (using a zero)." },
-            { q: "If Agentic AI has issues, which VOC case do you use?", o: ["VOC-111", "VOC-15117", "VOC-HELP"], c: 1, r: "Please attach your case to VOC-15117." }
+            { q: "As of April 28, how many have Agentic AI?", o: ["50%", "75%", "100%"], c: 2, r: "100% on April 28." },
+            { q: "AI Drawer location?", o: ["Left", "Top", "Right side"], c: 2, r: "Located on the right hand side." },
+            { q: "Which brand gets Apple Pay?", o: ["NetSol", "Web.com", "Register.com"], c: 0, r: "Specifically for NetSol." },
+            { q: "April SSL Discount code?", o: ["SSL30", "SSL0FF30", "SAVE30"], c: 1, r: "Code is SSL0FF30 (zero)." },
+            { q: "Agentic AI issues case ID?", o: ["VOC-111", "VOC-15117", "VOC-HELP"], c: 1, r: "Use VOC-15117." }
         ],
         auth: [
-            { q: "Primary purpose of authentication?", o: ["Sales", "Identity & security", "Time reduction"], c: 1, r: "Authentication ensures account protection." },
-            { q: "When should authentication be performed?", o: ["After resolution", "End of call", "At the beginning"], c: 2, r: "Must be done at the start before any assistance." },
-            { q: "Attempts allowed for a PIN?", o: ["1", "2", "3"], c: 2, r: "Maximum of 3 attempts is allowed." },
-            { q: "Attempts allowed for the Secret Word (Hermes)?", o: ["1", "3", "Unlimited"], c: 0, r: "Only 1 attempt allowed for Secret Word." },
-            { q: "What is true for Secret Word authentication?", o: ["Partial match OK", "Exact match required", "Case insensitive"], c: 1, r: "Exact match is required." },
-            { q: "What should agents NEVER disclose?", o: ["WHOIS info", "KB links", "Passwords or User ID"], c: 2, r: "Strictly prohibited from sharing passwords." },
-            { q: "Policy regarding account changes like phone/email?", o: ["Update manually", "Direct to Account Manager", "Escalate"], c: 1, r: "Direct customers to self-serve in Account Manager." },
-            { q: "Handling multiple accounts?", o: ["Auth once", "Auth each separately", "Skip auth"], c: 1, r: "Each account must be authenticated separately." },
-            { q: "No access to email on file?", o: ["Reset it", "Give password", "Direct to PER/CER process"], c: 2, r: "Direct to the ownership recovery process." },
-            { q: "Process renewal without authentication?", o: ["Name only", "Last 4 of card + Exp Date", "Email confirm"], c: 1, r: "Exception allows renewal with specific card details." }
-            // Note: I have included 10 of your 20 Auth questions to keep the code light. Add the rest as needed.
+            { q: "Primary purpose of authentication?", o: ["Increase sales", "Verify identity and maintain security", "Reduce time", "Promote products"], c: 1, r: "Goal is identity verification and security." },
+            { q: "When should authentication be performed?", o: ["After resolving", "End of call", "At the beginning before any assistance", "Only if requested"], c: 2, r: "Must be done at the start before any assistance." },
+            { q: "What if a customer cannot be authenticated?", o: ["Give details", "End call", "Provide only general guidance", "Reset password"], c: 2, r: "Only general info is allowed without authentication." },
+            { q: "Invalid for standard Jarvis accounts?", o: ["OTP", "PIN", "Security Questions", "IVR"], c: 2, r: "Security Questions were explicitly removed." },
+            { q: "PIN attempts allowed?", o: ["1", "2", "3", "Unlimited"], c: 2, r: "Maximum of 3 attempts allowed for PIN." },
+            { q: "OTP attempts allowed?", o: ["1", "2", "3", "5"], c: 2, r: "Maximum of 3 attempts allowed for OTP." },
+            { q: "Secret Word (Hermes) attempts?", o: ["1", "2", "3", "Unlimited"], c: 0, r: "Only 1 attempt is allowed for Secret Word." },
+            { q: "Secret Word requirement?", o: ["Partial OK", "First letter", "Exact match is required", "Case insensitive"], c: 2, r: "Exact match is required for Secret Word." },
+            { q: "When is re-auth NOT required?", o: ["Customer insists", "Successful IVR authentication", "Angry customer", "Simple issue"], c: 1, r: "Successful IVR auth means no re-auth is needed." },
+            { q: "NEVER disclose to customers?", o: ["WHOIS info", "KB links", "Passwords or User ID", "Public DNS"], c: 2, r: "Strictly prohibited from sharing passwords or IDs." },
+            { q: "Required in every interaction?", o: ["Address", "Full Name (First/Last)", "Billing history", "Password"], c: 1, r: "Full name is mandatory for every call." },
+            { q: "Do this BEFORE account changes:", o: ["Ask issue", "Authenticate customer", "Check billing", "Send email"], c: 1, r: "Authentication must precede any account change." },
+            { q: "If suspect social engineering:", o: ["Ignore", "Continue", "Inform manager immediately", "Limited access"], c: 2, r: "Managers must be informed of security risks." },
+            { q: "Allowed without authentication?", o: ["Email change", "Sharing WHOIS/Public info", "Reset password", "Update billing"], c: 1, r: "Public information does not require authentication." },
+            { q: "Policy regarding email/phone updates?", o: ["Update manually", "Ignore", "Direct to Account Manager", "Escalate"], c: 2, r: "Direct customers to self-serve." },
+            { q: "Handling multiple accounts?", o: ["Auth once", "Auth each separately", "Skip auth", "Verify main"], c: 1, r: "Each account must be authenticated separately." },
+            { q: "Policy regarding email disclosure?", o: ["Full email OK", "Never reference", "Only domain/provider may be shared", "Username"], c: 2, r: "Never share the full email." },
+            { q: "No access to email on file?", o: ["Reset it", "Give password", "Direct to PER/CER/Ownership process", "Ignore"], c: 2, r: "Direct to the ownership recovery process." },
+            { q: "Process renewal without authentication?", o: ["Name only", "Last 4 of card + Exp Date", "Full card #", "Email confirm"], c: 1, r: "Exception allows renewal with card details." },
+            { q: "Fraud inquiries need:", o: ["Full card #", "Password", "First and last 4 of card", "Username"], c: 2, r: "Specific details are needed for fraud." }
+        ],
+        escalation: [
+            { q: "NEVER do this on supervisor request:", o: ["Delay", "Deny", "Escalate", "Ask questions"], c: 1, r: "Policy states NEVER deny a supervisor request." },
+            { q: "FIRST step when customer requests supervisor?", o: ["Transfer", "Ignore", "De-escalate and attempt to assist", "End call"], c: 2, r: "First step is to try resolving the issue first." },
+            { q: "Purpose of de-escalation?", o: ["Delay", "Build trust and resolve", "Avoid work", "Reduce load"], c: 1, r: "Goal is to build trust and resolve the issue." },
+            { q: "If de-escalation fails?", o: ["Disconnect", "Ignore", "Offer supervisor immediately", "Restart"], c: 2, r: "Must escalate if customer insists." },
+            { q: "Main goal in CS interactions?", o: ["Reduce time", "Sales", "Resolve concern in one interaction", "Escalate"], c: 2, r: "Resolve concerns in one interaction is the priority." },
+            { q: "Considered an escalation risk?", o: ["Refund", "Threatening social media posts", "Basic questions"], c: 1, r: "Social media threats are a major risk." },
+            { q: "Threaten BBB/reviews. Agent should?", o: ["Ignore", "Argue", "Show empathy and understand concern", "Transfer"], c: 2, r: "Empathy is the required first response." },
+            { q: "Correct approach for escalation risks?", o: ["Rush", "Slow down & ask to assist", "Transfer", "End"], c: 1, r: "Helps regain control of the call." },
+            { q: "Agents should NEVER do what?", o: ["Empathy", "Disconnect call/chat", "Offer help", "Notes"], c: 1, r: "Disconnecting is prohibited." },
+            { q: "Information NEVER shared?", o: ["WHOIS", "Internal emails/employee info", "KB links"], c: 1, r: "Confidential internal info must not be shared." },
+            { q: "Define 'irate' customer:", o: ["Calm", "Personal attack", "Angry/dissatisfied with situation", "Threats"], c: 2, r: "Dissatisfied with situation defines irate." },
+            { q: "Define 'verbally abusive':", o: ["Complains", "Insults/derogatory remarks", "Supervisor ask"], c: 1, r: "Insults define abusive behavior." },
+            { q: "Define 'threatening' customer:", o: ["Escalation", "Review", "Threats of harm or attack", "Profanity"], c: 2, r: "Threats of harm define a threatening customer." },
+            { q: "Three key steps in de-escalation?", o: ["Ignore, Transfer", "Acknowledge, reassure, advocate", "Ask, answer"], c: 1, r: "Core steps: Acknowledge, Reassure, Advocate." },
+            { q: "Warnings for abusive customer?", o: ["1", "2", "3", "Unlimited"], c: 2, r: "Policy requires 3-step warning process." },
+            { q: "After third abusive behavior?", o: ["Disconnect", "Continue", "Transfer to supervisor", "Ignore"], c: 2, r: "After 3rd warning, escalate." },
+            { q: "Before supervisor transfer:", o: ["End call", "Notate interaction properly", "Reset"], c: 1, r: "Detailed notes are mandatory." },
+            { q: "Threaten an attack?", o: ["Argue", "Ignore", "Hold & contact supervisor immediately"], c: 2, r: "Immediate escalation is required." },
+            { q: "What NOT to do with threat?", o: ["Take seriously", "Notify boss", "Engage in discussion about threat"], c: 2, r: "Do not engage with the details of the threat." },
+            { q: "Documentation required?", o: ["Optional", "None", "Detailed notes in the ticket", "Supervisor only"], c: 2, r: "Documentation is mandatory." }
         ]
     };
 
+    const DATABASE_URL = "https://script.google.com/macros/s/AKfycbxWp_DUQbQLigctU3cXXl-ylznr5sVVv7sTYvY8S4Y3TjV3KVvx9GjjGCStCTMdLVaTJg/exec"; 
+    const HOST_KEY = "BengalsHost";
+    const audio = document.getElementById('bg-music');
     let curTab = 'domains'; let curIdx = 0; let score = 0; let uName = "";
 
-    function startMusic() { audio.volume = 0.2; audio.play(); document.getElementById('music-control').style.display = 'block'; }
-    function toggleMusic() { if (audio.paused) { audio.play(); document.getElementById('music-control').innerText = "🔊"; } else { audio.pause(); document.getElementById('music-control').innerText = "🔇"; } }
-
-    // HOST COMMANDS
-    function showHostLogin() { document.getElementById('screen-entry').style.display='none'; document.getElementById('screen-host-login').style.display='block'; }
-    function loginHost() {
-        if(document.getElementById('h-pass').value === HOST_KEY) {
-            startMusic();
-            document.getElementById('screen-host-login').style.display='none';
-            document.getElementById('screen-host-dash').style.display='block';
-            setInterval(syncHost, 3000);
-        } else { alert("Wrong Password"); }
+    function toggleMusic() { 
+        if (audio.paused) { audio.play(); document.getElementById('music-control').innerText = "🔊"; } 
+        else { audio.pause(); document.getElementById('music-control').innerText = "🔇"; } 
     }
-    function syncHost() {
-        fetch(DATABASE_URL).then(r => r.json()).then(data => {
-            let rH = ""; let fH = "";
-            data.forEach((p, i) => {
-                rH += `<div style="border-bottom:1px solid #ccc; padding:5px; font-size:0.8rem"><b>${i+1}. ${p.name}</b> - ${p.score} pts</div>`;
-                fH = `<div style="margin-bottom:8px; border-bottom:1px solid #222;">[${p.topic.toUpperCase()}] <b>${p.name}:</b> ${p.lastAction}</div>` + fH;
-            });
-            document.getElementById('host-ranks').innerHTML = rH;
-            document.getElementById('host-feed').innerHTML = fH;
-        });
-    }
-    function resetDatabase() { if(confirm("Wipe all daily data?")) fetch(DATABASE_URL, { method:'POST', mode:'no-cors', body:JSON.stringify({command:"RESET_ALL"}) }); }
 
-    // PLAYER COMMANDS
-    function startQuiz() {
+    function startSession() {
         uName = document.getElementById('username').value.trim();
         if(!uName) return alert("Enter Name");
-        startMusic();
+        audio.volume = 0.2; audio.play(); document.getElementById('music-control').style.display='block';
         document.getElementById('screen-entry').style.display='none';
         document.getElementById('tab-bar').style.display='flex';
-        document.getElementById('screen-quiz').style.display='block';
-        loadQ();
+        switchTab('domains');
     }
-    function loadQ() {
+
+    function switchTab(t) {
+        curTab = t; curIdx = 0; score = 0;
+        document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+        document.getElementById('tab-'+t).classList.add('active');
+        document.getElementById('screen-rank').style.display = 'none';
+        document.getElementById('screen-quiz').style.display = 'block';
+        loadQuestion();
+    }
+
+    function loadQuestion() {
         const d = allQuizzes[curTab][curIdx];
         document.getElementById('q-meta').innerText = `${curTab.toUpperCase()} | QUESTION ${curIdx + 1} OF ${allQuizzes[curTab].length}`;
         document.getElementById('q-text').innerText = d.q;
-        document.getElementById('rationale-box').style.display='none';
-        document.getElementById('next-btn').style.display='none';
-        const b = document.getElementById('choices-box'); b.innerHTML = '';
+        document.getElementById('rationale-box').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'none';
+        const b = document.getElementById('choices-container'); b.innerHTML = '';
         d.o.forEach((opt, i) => {
             const btn = document.createElement('button'); btn.className = 'choice-btn'; btn.innerText = opt;
-            btn.onclick = () => {
-                const isC = (i === d.c);
-                const btns = document.querySelectorAll('.choice-btn'); btns.forEach(x => x.disabled=true);
-                if(isC) { btn.classList.add('correct'); score += 100; }
-                else { btn.classList.add('wrong'); btns[d.c].classList.add('correct'); }
-                document.getElementById('r-text').innerText = d.r;
-                document.getElementById('rationale-box').style.display='block';
-                document.getElementById('next-btn').style.display='block';
-                fetch(DATABASE_URL, { method:'POST', mode:'no-cors', body:JSON.stringify({ name:uName, score:score, qText:d.q, isCorrect:isC, topic:curTab }) });
-            };
+            btn.onclick = () => selectChoice(i);
             b.appendChild(btn);
         });
     }
-    function switchTab(t) { 
-        curTab = t; curIdx = 0; score = 0; 
-        document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-        document.getElementById('tab-'+t).classList.add('active');
-        document.getElementById('screen-rank').style.display='none';
-        document.getElementById('screen-quiz').style.display='block';
-        loadQ(); 
+
+    function selectChoice(idx) {
+        const d = allQuizzes[curTab][curIdx];
+        const isCorrect = (idx === d.c);
+        const btns = document.querySelectorAll('.choice-btn');
+        btns.forEach(x => x.disabled = true);
+        if(isCorrect) { 
+            btns[idx].classList.add('correct'); 
+            score += 100; 
+        } else { 
+            btns[idx].classList.add('wrong'); 
+            btns[d.c].classList.add('correct'); 
+        }
+        document.getElementById('rationale-text').innerText = d.r;
+        document.getElementById('rationale-box').style.display = 'block';
+        document.getElementById('next-btn').style.display = 'block';
+        
+        fetch(DATABASE_URL, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            body: JSON.stringify({ name: uName, score: score, qText: d.q, isCorrect: isCorrect, topic: curTab }) 
+        });
     }
-    function showPlayerLB() {
-        document.getElementById('screen-quiz').style.display='none';
-        document.getElementById('screen-player-lb').style.display='block';
+
+    function showLeaderboard() {
+        document.getElementById('screen-quiz').style.display = 'none';
+        document.getElementById('screen-rank').style.display = 'block';
         fetch(DATABASE_URL).then(r => r.json()).then(data => {
-            let h = ""; data.slice(0,5).forEach((p, i) => { h += `<div style="display:flex; justify-content:space-between; padding:8px; ${p.name === uName ? 'color:var(--orange); font-weight:bold;':''}"><span>${i+1}. ${p.name}</span><span>${p.score}</span></div>`; });
+            let h = ""; data.slice(0,5).forEach((p, i) => { h += `<div style="display:flex; justify-content:space-between; padding:8px; ${p.name === uName ? 'color:orange; font-weight:bold;':''}"><span>${i+1}. ${p.name}</span><span>${p.score}</span></div>`; });
             document.getElementById('lb-list').innerHTML = h;
         });
     }
+
     function nextQuestion() {
-        curIdx++; if(curIdx < allQuizzes[curTab].length) { document.getElementById('screen-player-lb').style.display='none'; document.getElementById('screen-quiz').style.display='block'; loadQ(); }
-        else { alert("Tab finished! Great job."); }
+        curIdx++; 
+        if(curIdx < allQuizzes[curTab].length) {
+            document.getElementById('screen-rank').style.display = 'none';
+            document.getElementById('screen-quiz').style.display = 'block';
+            loadQuestion();
+        } else { alert("Topic complete! Try another tab."); }
     }
+
+    function showHostLogin() { document.getElementById('screen-entry').style.display='none'; document.getElementById('screen-host-login').style.display='block'; }
+    function loginHost() { if(document.getElementById('h-pass').value === HOST_KEY) { audio.volume=0.2; audio.play(); document.getElementById('screen-host-login').style.display='none'; document.getElementById('screen-host-dash').style.display='block'; setInterval(syncHost, 3000); } else { alert("Wrong Key"); } }
+    function syncHost() { fetch(DATABASE_URL).then(r => r.json()).then(data => { let rH = ""; let fH = ""; data.forEach((p, i) => { rH += `<div style="font-size:0.8rem; border-bottom:1px solid #ccc; padding:5px;">${i+1}. ${p.name} - <b>${p.score}</b></div>`; fH = `<div style="margin-bottom:8px; border-bottom:1px solid #222;">[${p.topic.toUpperCase()}] <b>${p.name}:</b> ${p.lastAction}</div>` + fH; }); document.getElementById('host-ranks').innerHTML = rH; document.getElementById('host-feed').innerHTML = fH; }); }
+    function resetDatabase() { if(confirm("Wipe all data?")) fetch(DATABASE_URL, { method:'POST', mode:'no-cors', body:JSON.stringify({command:"RESET_ALL"}) }); }
 </script>
 </body>
 </html>
