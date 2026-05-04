@@ -56,6 +56,7 @@
     <div class="tab-bar" id="tab-bar" style="display:none">
         <div class="tab active" id="tab-domains" onclick="switchTab('domains')">DOMAIN<br>PROCESS</div>
         <div class="tab" id="tab-inodes" onclick="switchTab('inodes')">INODES<br>PROCESS</div>
+      <div class="tab" id="tab-voc" onclick="switchTab('voc')">VOC &<br>INFOPOP</div>
         <div class="tab" id="tab-auth" onclick="switchTab('auth')">AUTH<br>PROCESS</div>
         <div class="tab" id="tab-escalation" onclick="switchTab('escalation')">ESCALATION<br>HANDLING</div>
     </div>
@@ -102,6 +103,18 @@
 
 <script>
     const allQuizzes = {
+       voc: [
+            { q: "As of April 28, how many have Agentic AI?", o: ["50%", "75%", "100%"], c: 2, r: "It reached 100% on April 28." },
+            { q: "AI Drawer location?", o: ["Left side", "Top", "Right side"], c: 2, r: "Located on the right hand side." },
+            { q: "Which brand gets Apple Pay?", o: ["NetSol", "Web.com", "Register.com"], c: 0, r: "Specifically for NetSol." },
+            { q: "April SSL Discount code?", o: ["SSL30", "SSL0FF30", "SAVE30"], c: 1, r: "Code is SSL0FF30 (zero)." },
+            { q: "Agentic AI issues case ID?", o: ["VOC-111", "VOC-15117", "VOC-HELP"], c: 1, r: "Use VOC-15117." },
+            { q: "When was the “Stay Signed In” feature introduced?", o: ["Jan 1", "Feb 14", "March 19", "April 1"], c: 2, r: "The feature rollout date is March 19." },
+            { q: "What does the “Stay Signed In” feature allow?", o: ["Skip login permanently", "Stay logged in for 7 days", "Auto-change PW"], c: 1, r: "Users stay logged in for 7 days without re-entering credentials." },
+            { q: "Is the “Stay Signed In” feature mandatory?", o: ["Yes", "No, it is optional", "Admins only"], c: 1, r: "Users can choose whether to enable it." },
+            { q: "Hovering over “Stay Signed In” text shows what?", o: ["Nothing", "Logs out", "A security reminder"], c: 2, r: "Hovering shows guidance for safe usage." },
+            { q: "Best devices for “Stay Signed In”?", o: ["Public computers", "Shared devices", "Personal or trusted devices"], c: 2, r: "Recommended only for personal/trusted devices." }
+        ],
         domains: [
             { q: "Most common reason for domain expiration?", o: ["Server failure", "Non-renewal before expiration", "DNS misconfig", "Hacking"], c: 1, r: "Non-renewal is the primary cause mentioned." },
             { q: "What can cause auto-renewal to fail?", o: ["Spelling", "Expired payment method", "Downtime", "Popularity"], c: 1, r: "Auto-renew fails if payment details are outdated." },
